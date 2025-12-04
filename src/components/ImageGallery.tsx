@@ -11,16 +11,17 @@ interface ImageGalleryProps {
 export default function ImageGallery({ title, images, isOpen, onClose }: ImageGalleryProps) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [autoplay, setAutoplay] = useState(true);
+  const hasImages = images && images.length > 0;
 
   useEffect(() => {
-    if (!autoplay || !isOpen) return;
+    if (!autoplay || !isOpen || !hasImages) return;
 
     const interval = setInterval(() => {
       setCurrentIndex((prev) => (prev + 1) % images.length);
     }, 5000);
 
     return () => clearInterval(interval);
-  }, [autoplay, isOpen, images.length]);
+  }, [autoplay, isOpen, hasImages, images.length]);
 
   const goToPrevious = () => {
     setCurrentIndex((prev) => (prev - 1 + images.length) % images.length);
@@ -33,6 +34,38 @@ export default function ImageGallery({ title, images, isOpen, onClose }: ImageGa
   };
 
   if (!isOpen) return null;
+
+  if (!hasImages) {
+    return (
+      <div
+        className="fixed inset-0 bg-black/95 z-50 flex items-center justify-center p-4"
+        onClick={onClose}
+      >
+        <div className="w-full max-w-4xl" onClick={(e) => e.stopPropagation()}>
+          <div className="relative bg-stone-900 rounded-2xl overflow-hidden">
+            <div className="relative h-96 md:h-[600px] overflow-hidden flex items-center justify-center">
+              <div className="text-center">
+                <p className="text-4xl font-bold text-amber-500 mb-4">NA</p>
+                <p className="text-xl text-stone-300">{title}</p>
+                <p className="text-stone-400 mt-2">Sem imagens disponíveis</p>
+              </div>
+            </div>
+
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                onClose();
+              }}
+              className="absolute top-4 right-4 w-12 h-12 bg-white/10 hover:bg-white/20 rounded-full flex items-center justify-center transition-colors z-10"
+              aria-label="Fechar"
+            >
+              <X className="w-6 h-6 text-white" />
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div
