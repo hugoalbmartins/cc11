@@ -5,9 +5,9 @@ import { galleryData } from '../lib/galleryData';
 const portfolioItems = [
   {
     id: 1,
-    title: 'Móvel Lacado Alto-Brilho',
+    title: 'Móvel Lacado Alto Brilho',
     category: 'Lacagem',
-    folder: 'Movel Lacado Alto-Brilho',
+    folder: 'Móvel Lacado Alto Brilho',
   },
   {
     id: 2,
@@ -29,15 +29,21 @@ const portfolioItems = [
   },
   {
     id: 5,
-    title: 'Pintura de Interiores',
-    category: 'Pintura',
-    folder: 'Pintura de Interiores Portfolio',
+    title: 'Lacagem & Restauro',
+    category: 'Lacagem',
+    folder: 'Lacagem & Restauro',
   },
   {
     id: 6,
     title: 'Carpintaria Residencial',
     category: 'Carpintaria',
     folder: 'Carpintaria Residencial',
+  },
+  {
+    id: 7,
+    title: 'Pintura de Interiores',
+    category: 'Pintura',
+    folder: 'Pintura de Interiores Portfolio',
   },
 ];
 
