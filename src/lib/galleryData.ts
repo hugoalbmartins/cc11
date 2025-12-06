@@ -20,9 +20,5 @@ export const galleryData: { [key: string]: string[] } = {
     '/images/Roupeiro Residencial/roupeiro_residencial_1.jpg',
     '/images/Roupeiro Residencial/roupeiro_residencial_2.jpg',
   ],
-  'Lacagem & Restauro': [
-    '/images/Lacagem & Restauro/lacagem_&_restauro_1.jpg',
-    '/images/Lacagem & Restauro/lacagem_&_restauro_2.jpg',
-  ],
   'Pintura de Interiores Portfolio': [],
 };

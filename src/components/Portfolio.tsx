@@ -29,18 +29,12 @@ const portfolioItems = [
   },
   {
     id: 5,
-    title: 'Lacagem & Restauro',
-    category: 'Lacagem',
-    folder: 'Lacagem & Restauro',
-  },
-  {
-    id: 6,
     title: 'Carpintaria Residencial',
     category: 'Carpintaria',
     folder: 'Carpintaria Residencial',
   },
   {
-    id: 7,
+    id: 6,
     title: 'Pintura de Interiores',
     category: 'Pintura',
     folder: 'Pintura de Interiores Portfolio',
