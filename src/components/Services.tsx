@@ -1,27 +1,28 @@
 import { useState } from 'react';
 import { Paintbrush, Hammer, RefreshCw } from 'lucide-react';
 import ImageGallery from './ImageGallery';
+import { galleryData } from '../lib/galleryData';
 
 const services = [
   {
     icon: RefreshCw,
     title: 'Lacagem & Restauro',
     description: 'Devolvemos vida e brilho a peças antigas, preservando a sua história e beleza original. Especialistas em lacagem de madeiras e restauro de móveis.',
-    image: 'https://images.pexels.com/photos/3945683/pexels-photo-3945683.jpeg?auto=compress&cs=tinysrgb&w=800',
+    image: '/images/Lacagem & Restauro/servicos_-_lacagem_&_restauro_1.jpeg',
     folder: 'Lacagem e Restauro',
   },
   {
     icon: Paintbrush,
     title: 'Pintura de Interiores',
     description: 'Serviços completos de pintura garantindo ambientes modernos, acolhedores e adaptados ao gosto de cada cliente.',
-    image: 'https://images.pexels.com/photos/1669754/pexels-photo-1669754.jpeg?auto=compress&cs=tinysrgb&w=800',
+    image: '/images/Pintura de Interiores/servicos_-_pinturas_de_interiores_1.jpg',
     folder: 'Pintura de Interiores',
   },
   {
     icon: Hammer,
     title: 'Carpintaria Nova',
     description: 'Soluções à medida para edifícios habitacionais, comerciais e industriais. Portas, roupeiros, móveis personalizados e muito mais.',
-    image: 'https://images.pexels.com/photos/534151/pexels-photo-534151.jpeg?auto=compress&cs=tinysrgb&w=800',
+    image: '/images/Carpintaria Residencial/servicos_-_carpintaria_nova_1.jpg',
     folder: 'Carpintaria Nova',
   },
 ];
@@ -31,13 +32,7 @@ export default function Services() {
   const [galleryImages, setGalleryImages] = useState<string[]>([]);
 
   const openGallery = (service: any) => {
-    const imageMap: { [key: string]: string[] } = {
-      'Lacagem e Restauro': [],
-      'Pintura de Interiores': [],
-      'Carpintaria Nova': [],
-    };
-
-    setGalleryImages(imageMap[service.folder] || [service.image]);
+    setGalleryImages(galleryData[service.folder] || [service.image]);
     setSelectedGallery(service.title);
   };
 
