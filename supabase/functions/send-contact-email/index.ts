@@ -60,6 +60,8 @@ Enviado através do formulário de contacto do website CC11
 }
 
 Deno.serve(async (req: Request) => {
+  console.log(`Received ${req.method} request`);
+
   if (req.method === "OPTIONS") {
     return new Response(null, {
       status: 200,
@@ -69,8 +71,9 @@ Deno.serve(async (req: Request) => {
 
   try {
     if (req.method !== "POST") {
+      console.error(`Method not allowed: ${req.method}`);
       return new Response(
-        JSON.stringify({ error: "Method not allowed" }),
+        JSON.stringify({ error: "Method not allowed", method: req.method }),
         {
           status: 405,
           headers: { ...corsHeaders, "Content-Type": "application/json" },
