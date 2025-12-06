@@ -15,29 +15,42 @@ export default function Contact() {
     e.preventDefault();
     setIsSubmitting(true);
 
+    console.log('=== Form Submission Debug ===');
+    console.log('Supabase URL:', import.meta.env.VITE_SUPABASE_URL);
+    console.log('Anon Key exists:', !!import.meta.env.VITE_SUPABASE_ANON_KEY);
+    console.log('Form data:', formData);
+
     try {
-      const response = await fetch(
-        `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/send-contact-email`,
-        {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${import.meta.env.VITE_SUPABASE_ANON_KEY}`,
-          },
-          body: JSON.stringify(formData),
-        }
-      );
+      const url = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/send-contact-email`;
+      console.log('Calling URL:', url);
+
+      const response = await fetch(url, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${import.meta.env.VITE_SUPABASE_ANON_KEY}`,
+        },
+        body: JSON.stringify(formData),
+      });
+
+      console.log('Response status:', response.status);
+      console.log('Response ok:', response.ok);
+
+      const responseData = await response.json();
+      console.log('Response data:', responseData);
 
       if (response.ok) {
         setSubmitStatus('success');
         setFormData({ name: '', email: '', phone: '', message: '' });
         setTimeout(() => setSubmitStatus('idle'), 5000);
       } else {
+        console.error('Server error:', responseData);
         setSubmitStatus('error');
         setTimeout(() => setSubmitStatus('idle'), 5000);
       }
     } catch (error) {
       console.error('Error sending form:', error);
+      console.error('Error details:', error instanceof Error ? error.message : String(error));
       setSubmitStatus('error');
       setTimeout(() => setSubmitStatus('idle'), 5000);
     } finally {
