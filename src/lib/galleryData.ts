@@ -18,8 +18,6 @@ export const galleryData: { [key: string]: string[] } = {
     '/images/Portas de Madeira/portas_de_madeira_2.jpg',
   ],
   'Roupeiro Residencial': [
-    '/images/Roupeiro Residencial/roupeiro_residencial_1.jpg',
-    '/images/Roupeiro Residencial/roupeiro_residencial_2.jpg',
     '/images/Roupeiro Residencial/roupeiro_residencial_1.jpeg',
     '/images/Roupeiro Residencial/roupeiro_residencial_2.jpeg',
   ],
