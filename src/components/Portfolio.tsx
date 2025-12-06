@@ -39,6 +39,12 @@ const portfolioItems = [
     category: 'Pintura',
     folder: 'Pintura de Interiores Portfolio',
   },
+  {
+    id: 7,
+    title: 'Lacagem e Restauro',
+    category: 'Lacagem',
+    folder: 'Lacagem e Restauro',
+  },
 ];
 
 export default function Portfolio() {

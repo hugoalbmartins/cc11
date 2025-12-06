@@ -27,8 +27,6 @@ export const galleryData: { [key: string]: string[] } = {
     '/images/Pintura de Interiores/servicos_-_pinturas_de_interiores_1.jpg',
   ],
   'Lacagem e Restauro': [
-    '/images/Lacagem & Restauro/lacagem_&_restauro_1.jpg',
-    '/images/Lacagem & Restauro/lacagem_&_restauro_2.jpg',
     '/images/Lacagem & Restauro/servicos_-_lacagem_&_restauro_1.jpeg',
     '/images/Lacagem & Restauro/servicos_-_lacagem_&_restauro_2.jpg',
   ],
