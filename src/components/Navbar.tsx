@@ -37,9 +37,9 @@ export default function Navbar() {
               }`}
             >
               <img
-                src="/MOBILE.jpg"
+                src="/design_sem_nome_20251206_173528_0000.png"
                 alt="CC11 Acabamentos"
-                className="h-16 md:h-20 drop-shadow-lg"
+                className="h-16 md:h-20 w-auto drop-shadow-lg"
               />
             </button>
 
@@ -123,9 +123,9 @@ export default function Navbar() {
               className="hover:scale-105 transition-transform"
             >
               <img
-                src="/MOBILE.jpg"
+                src="/design_sem_nome_20251206_173528_0000.png"
                 alt="CC11 Acabamentos"
-                className="h-32 md:h-40 drop-shadow-2xl"
+                className="h-32 md:h-40 w-auto drop-shadow-2xl"
               />
             </button>
           </div>
