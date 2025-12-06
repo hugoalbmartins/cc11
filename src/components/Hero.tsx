@@ -16,7 +16,7 @@ export default function Hero() {
         }}
       ></div>
 
-      <div className="relative z-20 text-center px-4 max-w-5xl mx-auto flex flex-col items-center pt-20">
+      <div className="relative z-20 text-center px-4 max-w-5xl mx-auto flex flex-col items-center pt-64 md:pt-72">
         <div className="h-1 w-32 bg-gradient-to-r from-transparent via-amber-400 to-transparent mx-auto mb-8"></div>
         <p className="text-xl md:text-2xl text-amber-100 font-light leading-relaxed">
           Excelência em Lacagem, Restauro e Carpintaria
