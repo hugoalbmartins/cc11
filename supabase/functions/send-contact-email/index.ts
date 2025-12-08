@@ -1,6 +1,5 @@
 import "jsr:@supabase/functions-js/edge-runtime.d.ts";
 import { createClient } from "npm:@supabase/supabase-js@2.57.4";
-import { SMTPClient } from "https://deno.land/x/denomailer@1.6.0/mod.ts";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -13,50 +12,6 @@ interface ContactFormData {
   email: string;
   phone?: string;
   message: string;
-}
-
-async function sendEmail(formData: ContactFormData): Promise<void> {
-  const smtpConfig = {
-    hostname: Deno.env.get("SMTP_HOSTNAME") || "mail.cc11.pt",
-    port: parseInt(Deno.env.get("SMTP_PORT") || "465"),
-    username: Deno.env.get("SMTP_USERNAME") || "contactos@cc11.pt",
-    password: Deno.env.get("SMTP_PASSWORD") || "",
-  };
-
-  const client = new SMTPClient({
-    connection: {
-      hostname: smtpConfig.hostname,
-      port: smtpConfig.port,
-      tls: true,
-      auth: {
-        username: smtpConfig.username,
-        password: smtpConfig.password,
-      },
-    },
-  });
-
-  const emailBody = `
-Nova mensagem de contacto recebida:
-
-Nome: ${formData.name}
-Email: ${formData.email}
-${formData.phone ? `Telefone: ${formData.phone}` : ''}
-
-Mensagem:
-${formData.message}
-
----
-Enviado através do formulário de contacto do website CC11
-  `.trim();
-
-  await client.send({
-    from: smtpConfig.username,
-    to: "geral@cc11.pt",
-    subject: `Novo contacto de ${formData.name}`,
-    content: emailBody,
-  });
-
-  await client.close();
 }
 
 Deno.serve(async (req: Request) => {
@@ -104,13 +59,14 @@ Deno.serve(async (req: Request) => {
         name: formData.name,
         email: formData.email,
         phone: formData.phone || null,
-        message: formData.message
+        message: formData.message,
+        created_at: new Date().toISOString()
       }]);
 
     if (dbError) {
       console.error("Database error:", dbError);
       return new Response(
-        JSON.stringify({ error: "Failed to save submission" }),
+        JSON.stringify({ error: "Failed to save submission", details: dbError.message }),
         {
           status: 500,
           headers: { ...corsHeaders, "Content-Type": "application/json" },
@@ -118,27 +74,12 @@ Deno.serve(async (req: Request) => {
       );
     }
 
-    try {
-      await sendEmail(formData);
-    } catch (emailError) {
-      console.error("Email error:", emailError);
-      return new Response(
-        JSON.stringify({
-          success: true,
-          message: "Contact form submitted but email notification failed",
-          warning: "Data saved but email not sent"
-        }),
-        {
-          status: 200,
-          headers: { ...corsHeaders, "Content-Type": "application/json" },
-        }
-      );
-    }
+    console.log("Contact form submission saved successfully");
 
     return new Response(
       JSON.stringify({
         success: true,
-        message: "Contact form submitted and email sent successfully",
+        message: "Mensagem recebida com sucesso! Entraremos em contacto brevemente.",
       }),
       {
         status: 200,
