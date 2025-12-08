@@ -14,6 +14,45 @@ interface ContactFormData {
   message: string;
 }
 
+async function sendEmailViaResend(formData: ContactFormData): Promise<void> {
+  const resendApiKey = Deno.env.get("RESEND_API_KEY");
+
+  if (!resendApiKey) {
+    throw new Error("RESEND_API_KEY not configured");
+  }
+
+  const emailHtml = `
+    <h2>Nova mensagem de contacto recebida</h2>
+    <p><strong>Nome:</strong> ${formData.name}</p>
+    <p><strong>Email:</strong> ${formData.email}</p>
+    ${formData.phone ? `<p><strong>Telefone:</strong> ${formData.phone}</p>` : ''}
+    <p><strong>Mensagem:</strong></p>
+    <p>${formData.message.replace(/\n/g, '<br>')}</p>
+    <hr>
+    <p><small>Enviado através do formulário de contacto do website CC11</small></p>
+  `;
+
+  const response = await fetch("https://api.resend.com/emails", {
+    method: "POST",
+    headers: {
+      "Authorization": `Bearer ${resendApiKey}`,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      from: "CC11 Website <contactos@cc11.pt>",
+      to: ["geral@cc11.pt"],
+      subject: `Novo contacto de ${formData.name}`,
+      html: emailHtml,
+      reply_to: formData.email,
+    }),
+  });
+
+  if (!response.ok) {
+    const error = await response.text();
+    throw new Error(`Failed to send email: ${error}`);
+  }
+}
+
 Deno.serve(async (req: Request) => {
   console.log(`Received ${req.method} request`);
 
@@ -75,6 +114,13 @@ Deno.serve(async (req: Request) => {
     }
 
     console.log("Contact form submission saved successfully");
+
+    try {
+      await sendEmailViaResend(formData);
+      console.log("Email sent successfully");
+    } catch (emailError) {
+      console.error("Failed to send email:", emailError);
+    }
 
     return new Response(
       JSON.stringify({
