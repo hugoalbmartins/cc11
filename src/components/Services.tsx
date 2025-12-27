@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Play, ChevronDown } from 'lucide-react';
+import { ChevronDown } from 'lucide-react';
 import ImageGallery from './ImageGallery';
 import ImageCarousel from './ImageCarousel';
 import { galleryData } from '../lib/galleryData';
@@ -216,33 +216,11 @@ export default function Services() {
                                       </span>
                                     </div>
 
-                                    <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-6">
-                                      {images.slice(0, 8).map((img, imgIndex) => (
-                                        <div
-                                          key={imgIndex}
-                                          className="relative aspect-square rounded-lg overflow-hidden bg-stone-200 cursor-pointer group/img"
-                                          onClick={() => openGallery(service)}
-                                        >
-                                          <img
-                                            src={img}
-                                            alt={`${service.title} ${imgIndex + 1}`}
-                                            className="w-full h-full object-cover transition-transform duration-500 group-hover/img:scale-110"
-                                          />
-                                          <div className="absolute inset-0 bg-black/40 opacity-0 group-hover/img:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-                                            <Play className="w-8 h-8 text-white" fill="white" />
-                                          </div>
-                                        </div>
-                                      ))}
-                                    </div>
-
-                                    {images.length > 0 && (
-                                      <button
-                                        onClick={() => openGallery(service)}
-                                        className="w-full px-6 py-3 bg-gradient-to-r from-amber-600 to-amber-500 hover:from-amber-700 hover:to-amber-600 text-white rounded-lg font-semibold transition-all duration-300 transform hover:scale-105 shadow-lg"
-                                      >
-                                        Ver todas as {images.length} imagens
-                                      </button>
-                                    )}
+                                    <ImageCarousel
+                                      images={images}
+                                      title={service.title}
+                                      onViewAll={() => openGallery(service)}
+                                    />
                                   </div>
                                 )}
 
