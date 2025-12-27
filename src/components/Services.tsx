@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { ChevronDown, Play } from 'lucide-react';
+import { Play } from 'lucide-react';
 import ImageGallery from './ImageGallery';
 import { galleryData } from '../lib/galleryData';
 
@@ -52,12 +52,25 @@ const services = [
 ];
 
 export default function Services() {
-  const [expandedCard, setExpandedCard] = useState<number | null>(null);
+  const [selectedService, setSelectedService] = useState<number | null>(null);
+  const [isTransitioning, setIsTransitioning] = useState(false);
   const [selectedGallery, setSelectedGallery] = useState<string | null>(null);
   const [galleryImages, setGalleryImages] = useState<string[]>([]);
 
-  const toggleCard = (index: number) => {
-    setExpandedCard(expandedCard === index ? null : index);
+  const selectService = (index: number) => {
+    if (selectedService === index) {
+      return;
+    }
+
+    if (selectedService !== null) {
+      setIsTransitioning(true);
+      setTimeout(() => {
+        setSelectedService(index);
+        setIsTransitioning(false);
+      }, 300);
+    } else {
+      setSelectedService(index);
+    }
   };
 
   const openGallery = (e: React.MouseEvent, service: any) => {
@@ -83,133 +96,169 @@ export default function Services() {
             </p>
           </div>
 
-          <div className="grid md:grid-cols-3 gap-6">
-            {services.map((service, index) => {
-              const images = galleryData[service.folder] || [];
-              const hasImages = images.length > 0;
-              const isExpanded = expandedCard === index;
+          {selectedService === null ? (
+            <div className="grid md:grid-cols-3 gap-6">
+              {services.map((service, index) => {
+                const images = galleryData[service.folder] || [];
+                const hasImages = images.length > 0;
 
-              return (
-                <div
-                  key={index}
-                  className={`group relative rounded-xl overflow-hidden transition-all duration-700 ${
-                    isExpanded ? 'md:col-span-3 shadow-2xl' : 'hover:shadow-xl hover:-translate-y-1'
-                  }`}
-                  style={{
-                    height: isExpanded ? (hasImages ? '500px' : '300px') : '120px',
-                  }}
-                >
-                  {hasImages && isExpanded && (
-                    <div className="absolute inset-0">
-                      <div className="absolute inset-0 bg-gradient-to-r from-stone-900/95 via-stone-900/80 to-transparent z-10"></div>
-                      <img
-                        src={images[0]}
-                        alt={service.title}
-                        className="w-full h-full object-cover"
-                      />
-                    </div>
-                  )}
-
-                  {!isExpanded && (
-                    <div className="absolute inset-0 bg-white"></div>
-                  )}
-
+                return (
                   <div
-                    className={`relative z-20 h-full flex flex-col cursor-pointer transition-all duration-500 ${
-                      isExpanded ? 'p-8' : 'p-6'
-                    }`}
-                    onClick={() => toggleCard(index)}
+                    key={index}
+                    className="group relative rounded-xl overflow-hidden transition-all duration-300 hover:shadow-xl hover:-translate-y-1 cursor-pointer bg-white h-[120px]"
+                    onClick={() => selectService(index)}
                   >
-                    <div className="flex items-center justify-between">
-                      <h3
-                        className={`font-bold transition-all duration-500 ${
-                          isExpanded
-                            ? 'text-3xl text-white'
-                            : 'text-lg text-stone-800 group-hover:text-amber-700'
-                        }`}
-                      >
-                        {service.title}
-                      </h3>
-                      <ChevronDown
-                        className={`flex-shrink-0 ml-4 transition-all duration-500 ${
-                          isExpanded
-                            ? 'w-8 h-8 text-amber-400 rotate-180'
-                            : 'w-6 h-6 text-amber-600'
-                        }`}
-                      />
+                    <div className="relative z-20 h-full flex flex-col p-6">
+                      <div className="flex items-center justify-between">
+                        <h3 className="font-bold text-lg text-stone-800 group-hover:text-amber-700 transition-colors">
+                          {service.title}
+                        </h3>
+                      </div>
                     </div>
 
+                    {hasImages && (
+                      <div className="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-amber-500 to-amber-600 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left"></div>
+                    )}
+                  </div>
+                );
+              })}
+            </div>
+          ) : (
+            <div className="flex flex-col lg:flex-row gap-6">
+              <div className="lg:w-1/3 space-y-3">
+                {services.map((service, index) => {
+                  const isSelected = selectedService === index;
+                  const images = galleryData[service.folder] || [];
+                  const hasImages = images.length > 0;
+
+                  return (
                     <div
-                      className={`transition-all duration-700 ${
-                        isExpanded
-                          ? 'mt-6 opacity-100 max-h-96'
-                          : 'mt-0 opacity-0 max-h-0 overflow-hidden'
+                      key={index}
+                      className={`relative rounded-xl overflow-hidden transition-all duration-300 cursor-pointer ${
+                        isSelected
+                          ? 'bg-gradient-to-r from-amber-600 to-amber-500 shadow-lg scale-105'
+                          : 'bg-white hover:bg-amber-50 hover:shadow-md'
                       }`}
+                      onClick={() => selectService(index)}
                     >
-                      <p
-                        className={`leading-relaxed mb-6 ${
-                          isExpanded ? 'text-amber-50 text-lg' : 'text-stone-600'
-                        }`}
-                      >
-                        {service.description}
-                      </p>
+                      <div className="p-4">
+                        <h3
+                          className={`font-bold text-base transition-colors ${
+                            isSelected ? 'text-white' : 'text-stone-800 hover:text-amber-700'
+                          }`}
+                        >
+                          {service.title}
+                        </h3>
+                      </div>
 
-                      {hasImages && (
-                        <div className="flex-1">
-                          <div className="flex items-center justify-between mb-4">
-                            <span className="text-amber-300 font-semibold text-sm uppercase tracking-wider">
-                              Galeria de Trabalhos
-                            </span>
-                            <span className="text-amber-200/80 text-sm">
-                              {images.length} imagens
-                            </span>
-                          </div>
+                      {hasImages && !isSelected && (
+                        <div className="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-amber-500 to-amber-600 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left"></div>
+                      )}
+                    </div>
+                  );
+                })}
+              </div>
 
-                          <div className="grid grid-cols-2 md:grid-cols-6 gap-3">
-                            {images.slice(0, 6).map((img, imgIndex) => (
-                              <div
-                                key={imgIndex}
-                                className="relative aspect-square rounded-lg overflow-hidden bg-stone-800 cursor-pointer group/img"
-                                onClick={(e) => openGallery(e, service)}
-                              >
+              <div className="lg:w-2/3 relative">
+                <div
+                  className={`transition-opacity duration-300 ${
+                    isTransitioning ? 'opacity-0' : 'opacity-100'
+                  }`}
+                >
+                  {selectedService !== null && (
+                    <div className="bg-white rounded-xl shadow-2xl overflow-hidden">
+                      {(() => {
+                        const service = services[selectedService];
+                        const images = galleryData[service.folder] || [];
+                        const hasImages = images.length > 0;
+
+                        return (
+                          <>
+                            {hasImages && (
+                              <div className="relative h-80 overflow-hidden">
+                                <div className="absolute inset-0 bg-gradient-to-r from-stone-900/95 via-stone-900/80 to-transparent z-10"></div>
                                 <img
-                                  src={img}
-                                  alt={`${service.title} ${imgIndex + 1}`}
-                                  className="w-full h-full object-cover transition-transform duration-500 group-hover/img:scale-110"
+                                  src={images[0]}
+                                  alt={service.title}
+                                  className="w-full h-full object-cover"
                                 />
-                                <div className="absolute inset-0 bg-black/40 opacity-0 group-hover/img:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-                                  <Play className="w-8 h-8 text-white" fill="white" />
+                                <div className="absolute inset-0 z-20 p-8 flex flex-col justify-end">
+                                  <h3 className="text-3xl font-bold text-white mb-2">
+                                    {service.title}
+                                  </h3>
                                 </div>
                               </div>
-                            ))}
-                          </div>
+                            )}
 
-                          {images.length > 6 && (
-                            <button
-                              onClick={(e) => openGallery(e, service)}
-                              className="mt-4 w-full px-6 py-3 bg-amber-500 hover:bg-amber-600 text-white rounded-lg font-semibold transition-all duration-300 transform hover:scale-105"
-                            >
-                              Ver todas as {images.length} imagens
-                            </button>
-                          )}
-                        </div>
-                      )}
+                            {!hasImages && (
+                              <div className="bg-gradient-to-r from-amber-600 to-amber-500 p-8">
+                                <h3 className="text-3xl font-bold text-white">
+                                  {service.title}
+                                </h3>
+                              </div>
+                            )}
 
-                      {!hasImages && (
-                        <div className="text-amber-200/60 text-center py-8 italic">
-                          Galeria em breve
-                        </div>
-                      )}
+                            <div className="p-8">
+                              <p className="text-stone-700 text-lg leading-relaxed mb-6">
+                                {service.description}
+                              </p>
+
+                              {hasImages && (
+                                <div>
+                                  <div className="flex items-center justify-between mb-4">
+                                    <span className="text-amber-700 font-semibold text-sm uppercase tracking-wider">
+                                      Galeria de Trabalhos
+                                    </span>
+                                    <span className="text-stone-500 text-sm">
+                                      {images.length} imagens
+                                    </span>
+                                  </div>
+
+                                  <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-6">
+                                    {images.slice(0, 8).map((img, imgIndex) => (
+                                      <div
+                                        key={imgIndex}
+                                        className="relative aspect-square rounded-lg overflow-hidden bg-stone-200 cursor-pointer group/img"
+                                        onClick={(e) => openGallery(e, service)}
+                                      >
+                                        <img
+                                          src={img}
+                                          alt={`${service.title} ${imgIndex + 1}`}
+                                          className="w-full h-full object-cover transition-transform duration-500 group-hover/img:scale-110"
+                                        />
+                                        <div className="absolute inset-0 bg-black/40 opacity-0 group-hover/img:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                                          <Play className="w-8 h-8 text-white" fill="white" />
+                                        </div>
+                                      </div>
+                                    ))}
+                                  </div>
+
+                                  {images.length > 0 && (
+                                    <button
+                                      onClick={(e) => openGallery(e, service)}
+                                      className="w-full px-6 py-3 bg-gradient-to-r from-amber-600 to-amber-500 hover:from-amber-700 hover:to-amber-600 text-white rounded-lg font-semibold transition-all duration-300 transform hover:scale-105 shadow-lg"
+                                    >
+                                      Ver todas as {images.length} imagens
+                                    </button>
+                                  )}
+                                </div>
+                              )}
+
+                              {!hasImages && (
+                                <div className="text-stone-400 text-center py-8 italic border-t border-stone-200">
+                                  Galeria em breve
+                                </div>
+                              )}
+                            </div>
+                          </>
+                        );
+                      })()}
                     </div>
-                  </div>
-
-                  {!isExpanded && hasImages && (
-                    <div className="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-amber-500 to-amber-600 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left"></div>
                   )}
                 </div>
-              );
-            })}
-          </div>
+              </div>
+            </div>
+          )}
         </div>
       </section>
 
