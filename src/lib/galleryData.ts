@@ -1,5 +1,13 @@
 export const galleryData: { [key: string]: string[] } = {
-  'Fornecimento e aplicacao de Carpintaria': [],
+  'Fornecimento e aplicacao de Carpintaria': [
+    '/images/Fornecimento e aplicacao de Carpintaria/20251201_152701.jpg',
+    '/images/Fornecimento e aplicacao de Carpintaria/20251201_152713.jpg',
+    '/images/Fornecimento e aplicacao de Carpintaria/IMG_20221002_174924.jpg',
+    '/images/Fornecimento e aplicacao de Carpintaria/IMG_20240129_084750.jpg',
+    '/images/Fornecimento e aplicacao de Carpintaria/IMG_20240129_084755.jpg',
+    '/images/Fornecimento e aplicacao de Carpintaria/IMG_20241018_100351.jpg',
+    '/images/Fornecimento e aplicacao de Carpintaria/IMG_20241018_100411.jpg',
+  ],
   'Recuperacao e manutencao de madeiras exteriores': [
     '/images/Recuperacao e manutencao de madeiras exteriores/20250526_140910.jpg',
     '/images/Recuperacao e manutencao de madeiras exteriores/20250602_122626.jpg',
@@ -7,8 +15,24 @@ export const galleryData: { [key: string]: string[] } = {
     '/images/Recuperacao e manutencao de madeiras exteriores/20250602_122737.jpg',
     '/images/Recuperacao e manutencao de madeiras exteriores/20250602_165739.jpg',
   ],
-  'Renovacao de soalhos e pavimentos em madeira': [],
-  'Restauro e acabamento de mobiliario': [],
+  'Renovacao de soalhos e pavimentos em madeira': [
+    '/images/Renovacao de soalhos e pavimentos em madeira/20241114_144558.jpg',
+    '/images/Renovacao de soalhos e pavimentos em madeira/20250116_112650.jpg',
+    '/images/Renovacao de soalhos e pavimentos em madeira/20250414_184116.jpg',
+    '/images/Renovacao de soalhos e pavimentos em madeira/20250415_141140.jpg',
+    '/images/Renovacao de soalhos e pavimentos em madeira/20250416_171827.jpg',
+    '/images/Renovacao de soalhos e pavimentos em madeira/20250417_153959.jpg',
+    '/images/Renovacao de soalhos e pavimentos em madeira/20251128_151823.jpg',
+    '/images/Renovacao de soalhos e pavimentos em madeira/IMG_20190729_163044.jpg',
+    '/images/Renovacao de soalhos e pavimentos em madeira/IMG_20190802_181226.jpg',
+  ],
+  'Restauro e acabamento de mobiliario': [
+    '/images/Restauro e acabamento de mobiliario/IMG_20190201_200238.jpg',
+    '/images/Restauro e acabamento de mobiliario/IMG_20190220_183030.jpg',
+    '/images/Restauro e acabamento de mobiliario/IMG_20200410_110703.jpg',
+    '/images/Restauro e acabamento de mobiliario/IMG_20220720_170103.jpg',
+    '/images/Restauro e acabamento de mobiliario/IMG_20240911_200627.jpg',
+  ],
   'Restauro e lacagem de carpintaria': [
     '/images/Restauro e lacagem de carpintaria/20250422_162215.jpg',
     '/images/Restauro e lacagem de carpintaria/20250422_162302.jpg',
@@ -21,7 +45,15 @@ export const galleryData: { [key: string]: string[] } = {
     '/images/Restauro e lacagem de carpintaria/IMG_20241026_120802.jpg',
     '/images/Restauro e lacagem de carpintaria/IMG_20241026_120831.jpg',
   ],
-  'Projectos de decoracao em 3D e execucao': [],
+  'Projectos de decoracao em 3D e execucao': [
+    '/images/Projectos de decoracao em 3D e execucao/20250808_213310.jpg',
+    '/images/Projectos de decoracao em 3D e execucao/20250808_213333.jpg',
+    '/images/Projectos de decoracao em 3D e execucao/20250808_213351.jpg',
+    '/images/Projectos de decoracao em 3D e execucao/20250811_184751.jpg',
+    '/images/Projectos de decoracao em 3D e execucao/IMG-20250313-WA0006.jpg',
+    '/images/Projectos de decoracao em 3D e execucao/IMG-20250313-WA0008.jpg',
+    '/images/Projectos de decoracao em 3D e execucao/IMG-20250322-WA0002.jpg',
+  ],
   'Mobiliario por medida': [
     '/images/Mobiliario por medida/20251201_152629.jpg',
     '/images/Mobiliario por medida/IMG_20221018_003341.jpg',

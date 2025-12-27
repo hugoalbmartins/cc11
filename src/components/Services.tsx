@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { ChevronDown, Image as ImageIcon } from 'lucide-react';
+import { ChevronDown, Play } from 'lucide-react';
 import ImageGallery from './ImageGallery';
 import { galleryData } from '../lib/galleryData';
 
@@ -87,89 +87,124 @@ export default function Services() {
             {services.map((service, index) => {
               const images = galleryData[service.folder] || [];
               const hasImages = images.length > 0;
+              const isExpanded = expandedCard === index;
 
               return (
                 <div
                   key={index}
-                  className={`bg-white rounded-xl shadow-lg transition-all duration-300 overflow-hidden ${
-                    expandedCard === index ? 'md:col-span-3 shadow-2xl' : 'hover:shadow-xl hover:-translate-y-1'
+                  className={`group relative rounded-xl overflow-hidden transition-all duration-700 ${
+                    isExpanded ? 'md:col-span-3 shadow-2xl' : 'hover:shadow-xl hover:-translate-y-1'
                   }`}
+                  style={{
+                    height: isExpanded ? (hasImages ? '500px' : '300px') : '120px',
+                  }}
                 >
+                  {hasImages && isExpanded && (
+                    <div className="absolute inset-0">
+                      <div className="absolute inset-0 bg-gradient-to-r from-stone-900/95 via-stone-900/80 to-transparent z-10"></div>
+                      <img
+                        src={images[0]}
+                        alt={service.title}
+                        className="w-full h-full object-cover"
+                      />
+                    </div>
+                  )}
+
+                  {!isExpanded && (
+                    <div className="absolute inset-0 bg-white"></div>
+                  )}
+
                   <div
-                    className="p-6 cursor-pointer"
+                    className={`relative z-20 h-full flex flex-col cursor-pointer transition-all duration-500 ${
+                      isExpanded ? 'p-8' : 'p-6'
+                    }`}
                     onClick={() => toggleCard(index)}
                   >
-                    <div className="flex items-center justify-between mb-3">
-                      <h3 className="text-xl font-bold text-stone-800 hover:text-amber-700 transition-colors flex-1">
+                    <div className="flex items-center justify-between">
+                      <h3
+                        className={`font-bold transition-all duration-500 ${
+                          isExpanded
+                            ? 'text-3xl text-white'
+                            : 'text-lg text-stone-800 group-hover:text-amber-700'
+                        }`}
+                      >
                         {service.title}
                       </h3>
                       <ChevronDown
-                        className={`w-6 h-6 text-amber-600 transition-transform duration-300 flex-shrink-0 ml-2 ${
-                          expandedCard === index ? 'rotate-180' : ''
+                        className={`flex-shrink-0 ml-4 transition-all duration-500 ${
+                          isExpanded
+                            ? 'w-8 h-8 text-amber-400 rotate-180'
+                            : 'w-6 h-6 text-amber-600'
                         }`}
                       />
                     </div>
 
                     <div
-                      className={`transition-all duration-300 overflow-hidden ${
-                        expandedCard === index ? 'max-h-96 opacity-100 mt-4' : 'max-h-0 opacity-0'
+                      className={`transition-all duration-700 ${
+                        isExpanded
+                          ? 'mt-6 opacity-100 max-h-96'
+                          : 'mt-0 opacity-0 max-h-0 overflow-hidden'
                       }`}
                     >
-                      <p className="text-stone-600 leading-relaxed mb-4">
+                      <p
+                        className={`leading-relaxed mb-6 ${
+                          isExpanded ? 'text-amber-50 text-lg' : 'text-stone-600'
+                        }`}
+                      >
                         {service.description}
                       </p>
-                    </div>
-                  </div>
 
-                  {hasImages && (
-                    <div
-                      className={`transition-all duration-300 overflow-hidden ${
-                        expandedCard === index ? 'max-h-[500px] opacity-100' : 'max-h-0 opacity-0'
-                      }`}
-                    >
-                      <div className="px-6 pb-6">
-                        <div className="border-t border-stone-200 pt-4">
-                          <div className="flex items-center justify-between mb-3">
-                            <h4 className="text-sm font-semibold text-stone-700 uppercase tracking-wide">
+                      {hasImages && (
+                        <div className="flex-1">
+                          <div className="flex items-center justify-between mb-4">
+                            <span className="text-amber-300 font-semibold text-sm uppercase tracking-wider">
                               Galeria de Trabalhos
-                            </h4>
-                            <span className="text-xs text-stone-500">{images.length} imagens</span>
+                            </span>
+                            <span className="text-amber-200/80 text-sm">
+                              {images.length} imagens
+                            </span>
                           </div>
-                          <div className="grid grid-cols-4 gap-2 mb-4">
-                            {images.slice(0, 4).map((img, imgIndex) => (
+
+                          <div className="grid grid-cols-2 md:grid-cols-6 gap-3">
+                            {images.slice(0, 6).map((img, imgIndex) => (
                               <div
                                 key={imgIndex}
-                                className="aspect-square rounded-lg overflow-hidden bg-stone-200 cursor-pointer hover:ring-2 hover:ring-amber-500 transition-all"
+                                className="relative aspect-square rounded-lg overflow-hidden bg-stone-800 cursor-pointer group/img"
                                 onClick={(e) => openGallery(e, service)}
                               >
                                 <img
                                   src={img}
                                   alt={`${service.title} ${imgIndex + 1}`}
-                                  className="w-full h-full object-cover hover:scale-110 transition-transform duration-300"
+                                  className="w-full h-full object-cover transition-transform duration-500 group-hover/img:scale-110"
                                 />
+                                <div className="absolute inset-0 bg-black/40 opacity-0 group-hover/img:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                                  <Play className="w-8 h-8 text-white" fill="white" />
+                                </div>
                               </div>
                             ))}
                           </div>
-                          <button
-                            onClick={(e) => openGallery(e, service)}
-                            className="w-full inline-flex items-center justify-center gap-2 px-4 py-2 bg-amber-500 text-white rounded-lg hover:bg-amber-600 transition-colors"
-                          >
-                            <ImageIcon className="w-4 h-4" />
-                            Ver Galeria Completa
-                          </button>
-                        </div>
-                      </div>
-                    </div>
-                  )}
 
-                  {!hasImages && expandedCard === index && (
-                    <div className="px-6 pb-6">
-                      <div className="border-t border-stone-200 pt-4">
-                        <p className="text-sm text-stone-500 text-center italic">
+                          {images.length > 6 && (
+                            <button
+                              onClick={(e) => openGallery(e, service)}
+                              className="mt-4 w-full px-6 py-3 bg-amber-500 hover:bg-amber-600 text-white rounded-lg font-semibold transition-all duration-300 transform hover:scale-105"
+                            >
+                              Ver todas as {images.length} imagens
+                            </button>
+                          )}
+                        </div>
+                      )}
+
+                      {!hasImages && (
+                        <div className="text-amber-200/60 text-center py-8 italic">
                           Galeria em breve
-                        </p>
-                      </div>
+                        </div>
+                      )}
                     </div>
+                  </div>
+
+                  {!isExpanded && hasImages && (
+                    <div className="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-amber-500 to-amber-600 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left"></div>
                   )}
                 </div>
               );
