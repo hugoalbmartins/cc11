@@ -7,25 +7,25 @@ const portfolioItems = [
     id: 1,
     title: 'Fornecimento e aplicação de Carpintaria',
     category: 'Carpintaria',
-    folder: 'Fornecimento e aplicação de Carpintaria',
+    folder: 'Fornecimento e aplicacao de Carpintaria',
   },
   {
     id: 2,
     title: 'Recuperação e manutenção de madeiras exteriores',
     category: 'Manutenção',
-    folder: 'Recuperação e manutenção de madeiras exteriores',
+    folder: 'Recuperacao e manutencao de madeiras exteriores',
   },
   {
     id: 3,
     title: 'Renovação de soalhos e pavimentos em madeira',
     category: 'Renovação',
-    folder: 'Renovação de soalhos e pavimentos em madeira',
+    folder: 'Renovacao de soalhos e pavimentos em madeira',
   },
   {
     id: 4,
     title: 'Restauro e acabamento de mobiliário',
     category: 'Restauro',
-    folder: 'Restauro e acabamento de mobiliário',
+    folder: 'Restauro e acabamento de mobiliario',
   },
   {
     id: 5,
@@ -37,13 +37,13 @@ const portfolioItems = [
     id: 6,
     title: 'Projectos de decoração em 3D e execução',
     category: 'Decoração',
-    folder: 'Projectos de decoração em 3D e execução',
+    folder: 'Projectos de decoracao em 3D e execucao',
   },
   {
     id: 7,
     title: 'Mobiliário por medida (cozinhas, roupeiros, etc...)',
     category: 'Mobiliário',
-    folder: 'Mobiliário por medida (cozinhas, roupeiros, etc...)',
+    folder: 'Mobiliario por medida',
   },
   {
     id: 8,
@@ -55,7 +55,7 @@ const portfolioItems = [
     id: 9,
     title: 'Aplicação de microcimento',
     category: 'Revestimentos',
-    folder: 'Aplicação de microcimento',
+    folder: 'Aplicacao de microcimento',
   },
 ];
 
