@@ -5,45 +5,57 @@ import { galleryData } from '../lib/galleryData';
 const portfolioItems = [
   {
     id: 1,
-    title: 'Móvel Lacado Alto Brilho',
-    category: 'Lacagem',
-    folder: 'Móvel Lacado Alto Brilho',
+    title: 'Fornecimento e aplicação de Carpintaria',
+    category: 'Carpintaria',
+    folder: 'Fornecimento e aplicação de Carpintaria',
   },
   {
     id: 2,
-    title: 'Portas de Madeira',
-    category: 'Carpintaria',
-    folder: 'Portas de Madeira',
+    title: 'Recuperação e manutenção de madeiras exteriores',
+    category: 'Manutenção',
+    folder: 'Recuperação e manutenção de madeiras exteriores',
   },
   {
     id: 3,
-    title: 'Móveis Personalizados Modernos',
-    category: 'Carpintaria',
-    folder: 'Móveis Personalizados Modernos',
+    title: 'Renovação de soalhos e pavimentos em madeira',
+    category: 'Renovação',
+    folder: 'Renovação de soalhos e pavimentos em madeira',
   },
   {
     id: 4,
-    title: 'Roupeiro Residencial',
-    category: 'Carpintaria',
-    folder: 'Roupeiro Residencial',
+    title: 'Restauro e acabamento de mobiliário',
+    category: 'Restauro',
+    folder: 'Restauro e acabamento de mobiliário',
   },
   {
     id: 5,
-    title: 'Carpintaria Residencial',
-    category: 'Carpintaria',
-    folder: 'Carpintaria Residencial',
+    title: 'Restauro e lacagem de carpintaria',
+    category: 'Lacagem',
+    folder: 'Restauro e lacagem de carpintaria',
   },
   {
     id: 6,
-    title: 'Pintura de Interiores',
-    category: 'Pintura',
-    folder: 'Pintura de Interiores Portfolio',
+    title: 'Projectos de decoração em 3D e execução',
+    category: 'Decoração',
+    folder: 'Projectos de decoração em 3D e execução',
   },
   {
     id: 7,
-    title: 'Lacagem e Restauro',
-    category: 'Lacagem',
-    folder: 'Lacagem e Restauro',
+    title: 'Mobiliário por medida (cozinhas, roupeiros, etc...)',
+    category: 'Mobiliário',
+    folder: 'Mobiliário por medida (cozinhas, roupeiros, etc...)',
+  },
+  {
+    id: 8,
+    title: 'Pintura de metais',
+    category: 'Pintura',
+    folder: 'Pintura de metais',
+  },
+  {
+    id: 9,
+    title: 'Aplicação de microcimento',
+    category: 'Revestimentos',
+    folder: 'Aplicação de microcimento',
   },
 ];
 
@@ -77,6 +89,7 @@ export default function Portfolio() {
             return (
               <div
                 key={item.id}
+                data-portfolio={item.title}
                 className="group relative overflow-hidden rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 cursor-pointer"
                 onClick={() => openGallery(item)}
               >

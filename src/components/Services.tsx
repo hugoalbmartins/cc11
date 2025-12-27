@@ -1,39 +1,77 @@
 import { useState } from 'react';
-import { Paintbrush, Hammer, RefreshCw } from 'lucide-react';
-import ImageGallery from './ImageGallery';
-import { galleryData } from '../lib/galleryData';
+import { ChevronDown, ExternalLink } from 'lucide-react';
 
 const services = [
   {
-    icon: RefreshCw,
-    title: 'Lacagem & Restauro',
-    description: 'Devolvemos vida e brilho a peças antigas, preservando a sua história e beleza original. Especialistas em lacagem de madeiras e restauro de móveis.',
-    image: '/images/Lacagem & Restauro/servicos_-_lacagem_&_restauro_1.jpeg',
-    folder: 'Lacagem e Restauro',
+    title: 'Fornecimento e aplicação de Carpintaria',
+    description: 'Soluções completas em carpintaria para edifícios habitacionais, comerciais e industriais. Do fornecimento à instalação, garantimos acabamentos de excelência em todos os projectos.',
+    portfolioLink: '#portfolio',
   },
   {
-    icon: Paintbrush,
-    title: 'Pintura de Interiores',
-    description: 'Serviços completos de pintura garantindo ambientes modernos, acolhedores e adaptados ao gosto de cada cliente.',
-    image: '/images/Pintura de Interiores/servicos_-_pinturas_de_interiores_1.jpg',
-    folder: 'Pintura de Interiores',
+    title: 'Recuperação e manutenção de madeiras exteriores',
+    description: 'Especialistas em devolver vida às madeiras expostas ao tempo. Tratamentos profissionais que protegem e preservam a beleza natural das suas estruturas exteriores.',
+    portfolioLink: '#portfolio',
   },
   {
-    icon: Hammer,
-    title: 'Carpintaria Nova',
-    description: 'Soluções à medida para edifícios habitacionais, comerciais e industriais. Portas, roupeiros, móveis personalizados e muito mais.',
-    image: '/images/Carpintaria Residencial/servicos_-_carpintaria_nova_1.jpg',
-    folder: 'Carpintaria Nova',
+    title: 'Renovação de soalhos e pavimentos em madeira',
+    description: 'Transformamos soalhos antigos em superfícies renovadas. Lixagem, tratamento e acabamento que respeitam a essência da madeira, conferindo-lhe nova vida e durabilidade.',
+    portfolioLink: '#portfolio',
+  },
+  {
+    title: 'Restauro e acabamento de mobiliário',
+    description: 'Devolvemos o esplendor original às suas peças de mobiliário. Técnicas artesanais combinadas com métodos modernos para preservar memórias e valorizar o seu património.',
+    portfolioLink: '#portfolio',
+  },
+  {
+    title: 'Restauro e lacagem de carpintaria',
+    description: 'Processos especializados de lacagem que conferem brilho e proteção duradoura. Restauramos carpintarias com rigor técnico, mantendo a autenticidade e qualidade.',
+    portfolioLink: '#portfolio',
+  },
+  {
+    title: 'Projectos de decoração em 3D e execução',
+    description: 'Visualize o seu espaço antes de o concretizar. Desenvolvemos projectos de decoração em 3D com realismo fotográfico e executamos cada detalhe com precisão milimétrica.',
+    portfolioLink: '#portfolio',
+  },
+  {
+    title: 'Mobiliário por medida (cozinhas, roupeiros, etc...)',
+    description: 'Criamos mobiliário personalizado que se adapta perfeitamente ao seu espaço e estilo. Cozinhas funcionais, roupeiros optimizados e soluções únicas pensadas para si.',
+    portfolioLink: '#portfolio',
+  },
+  {
+    title: 'Pintura de metais',
+    description: 'Acabamentos profissionais em superfícies metálicas. Preparação, tratamento e pintura especializada que garante proteção contra corrosão e um resultado estético impecável.',
+    portfolioLink: '#portfolio',
+  },
+  {
+    title: 'Aplicação de microcimento',
+    description: 'Revestimento contemporâneo e versátil para pavimentos e paredes. Aplicação técnica de microcimento que oferece continuidade visual, resistência e elegância moderna.',
+    portfolioLink: '#portfolio',
   },
 ];
 
 export default function Services() {
-  const [selectedGallery, setSelectedGallery] = useState<string | null>(null);
-  const [galleryImages, setGalleryImages] = useState<string[]>([]);
+  const [expandedCard, setExpandedCard] = useState<number | null>(null);
 
-  const openGallery = (service: any) => {
-    setGalleryImages(galleryData[service.folder] || [service.image]);
-    setSelectedGallery(service.title);
+  const toggleCard = (index: number) => {
+    setExpandedCard(expandedCard === index ? null : index);
+  };
+
+  const scrollToPortfolio = (e: React.MouseEvent, serviceName: string) => {
+    e.stopPropagation();
+    const portfolioSection = document.querySelector('#portfolio');
+    if (portfolioSection) {
+      portfolioSection.scrollIntoView({ behavior: 'smooth' });
+      setTimeout(() => {
+        const portfolioCard = document.querySelector(`[data-portfolio="${serviceName}"]`);
+        if (portfolioCard) {
+          portfolioCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          portfolioCard.classList.add('ring-4', 'ring-amber-500', 'ring-offset-4');
+          setTimeout(() => {
+            portfolioCard.classList.remove('ring-4', 'ring-amber-500', 'ring-offset-4');
+          }, 2000);
+        }
+      }, 500);
+    }
   };
 
   return (
@@ -49,45 +87,48 @@ export default function Services() {
           </p>
         </div>
 
-        <div className="grid md:grid-cols-3 gap-8">
+        <div className="grid md:grid-cols-3 gap-6">
           {services.map((service, index) => (
             <div
               key={index}
-              className="group bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 cursor-pointer"
-              onClick={() => openGallery(service)}
+              className={`bg-white rounded-xl shadow-lg transition-all duration-300 cursor-pointer overflow-hidden ${
+                expandedCard === index ? 'md:col-span-3 shadow-2xl' : 'hover:shadow-xl hover:-translate-y-1'
+              }`}
+              onClick={() => toggleCard(index)}
             >
-              <div className="relative h-64 overflow-hidden">
-                <img
-                  src={service.image}
-                  alt={service.title}
-                  className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-500"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-stone-900/80 to-transparent"></div>
-                <div className="absolute bottom-4 left-4">
-                  <div className="w-14 h-14 bg-amber-500 rounded-full flex items-center justify-center shadow-lg">
-                    <service.icon className="w-7 h-7 text-white" />
-                  </div>
-                </div>
-              </div>
               <div className="p-6">
-                <h3 className="text-2xl font-bold text-stone-800 mb-3 group-hover:text-amber-700 transition-colors">
-                  {service.title}
-                </h3>
-                <p className="text-stone-600 leading-relaxed">
-                  {service.description}
-                </p>
+                <div className="flex items-center justify-between mb-3">
+                  <h3 className="text-xl font-bold text-stone-800 group-hover:text-amber-700 transition-colors flex-1">
+                    {service.title}
+                  </h3>
+                  <ChevronDown
+                    className={`w-6 h-6 text-amber-600 transition-transform duration-300 flex-shrink-0 ml-2 ${
+                      expandedCard === index ? 'rotate-180' : ''
+                    }`}
+                  />
+                </div>
+
+                <div
+                  className={`transition-all duration-300 overflow-hidden ${
+                    expandedCard === index ? 'max-h-96 opacity-100 mt-4' : 'max-h-0 opacity-0'
+                  }`}
+                >
+                  <p className="text-stone-600 leading-relaxed mb-4">
+                    {service.description}
+                  </p>
+                  <button
+                    onClick={(e) => scrollToPortfolio(e, service.title)}
+                    className="inline-flex items-center gap-2 px-4 py-2 bg-amber-500 text-white rounded-lg hover:bg-amber-600 transition-colors"
+                  >
+                    Ver Portfólio
+                    <ExternalLink className="w-4 h-4" />
+                  </button>
+                </div>
               </div>
             </div>
           ))}
         </div>
       </div>
-
-      <ImageGallery
-        title={selectedGallery || ''}
-        images={galleryImages}
-        isOpen={selectedGallery !== null}
-        onClose={() => setSelectedGallery(null)}
-      />
     </section>
   );
 }
