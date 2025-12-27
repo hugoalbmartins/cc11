@@ -57,12 +57,6 @@ export default function Navbar() {
                 Serviços
               </button>
               <button
-                onClick={() => scrollToSection('portfolio')}
-                className="text-amber-50 hover:text-amber-300 transition-colors font-medium"
-              >
-                Portfolio
-              </button>
-              <button
                 onClick={() => scrollToSection('contact')}
                 className="px-6 py-2 bg-amber-600 hover:bg-amber-500 text-white rounded-full transition-colors font-medium"
               >
@@ -92,12 +86,6 @@ export default function Navbar() {
                   className="text-amber-50 hover:text-amber-300 transition-colors font-medium text-left"
                 >
                   Serviços
-                </button>
-                <button
-                  onClick={() => scrollToSection('portfolio')}
-                  className="text-amber-50 hover:text-amber-300 transition-colors font-medium text-left"
-                >
-                  Portfolio
                 </button>
                 <button
                   onClick={() => scrollToSection('contact')}
