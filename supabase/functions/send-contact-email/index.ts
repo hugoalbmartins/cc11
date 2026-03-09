@@ -1,5 +1,6 @@
 import "jsr:@supabase/functions-js/edge-runtime.d.ts";
 import { createClient } from "npm:@supabase/supabase-js@2.57.4";
+import { SMTPClient } from "https://deno.land/x/denomailer@1.6.0/mod.ts";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -14,11 +15,16 @@ interface ContactFormData {
   message: string;
 }
 
-async function sendEmailViaResend(formData: ContactFormData): Promise<void> {
-  const resendApiKey = Deno.env.get("RESEND_API_KEY");
+async function sendEmailViaSMTP(formData: ContactFormData): Promise<void> {
+  const smtpHost = Deno.env.get("SMTP_HOST");
+  const smtpPort = Deno.env.get("SMTP_PORT");
+  const smtpUser = Deno.env.get("SMTP_USER");
+  const smtpPassword = Deno.env.get("SMTP_PASSWORD");
+  const emailFrom = Deno.env.get("EMAIL_FROM") || "contactos@cc11.pt";
+  const emailTo = Deno.env.get("EMAIL_TO") || "geral@cc11.pt";
 
-  if (!resendApiKey) {
-    throw new Error("RESEND_API_KEY not configured");
+  if (!smtpHost || !smtpPort || !smtpUser || !smtpPassword) {
+    throw new Error("SMTP configuration not complete. Required: SMTP_HOST, SMTP_PORT, SMTP_USER, SMTP_PASSWORD");
   }
 
   const emailHtml = `
@@ -32,25 +38,41 @@ async function sendEmailViaResend(formData: ContactFormData): Promise<void> {
     <p><small>Enviado através do formulário de contacto do website CC11</small></p>
   `;
 
-  const response = await fetch("https://api.resend.com/emails", {
-    method: "POST",
-    headers: {
-      "Authorization": `Bearer ${resendApiKey}`,
-      "Content-Type": "application/json",
+  const emailText = `
+Nova mensagem de contacto recebida
+
+Nome: ${formData.name}
+Email: ${formData.email}
+${formData.phone ? `Telefone: ${formData.phone}\n` : ''}
+Mensagem:
+${formData.message}
+
+---
+Enviado através do formulário de contacto do website CC11
+  `;
+
+  const client = new SMTPClient({
+    connection: {
+      hostname: smtpHost,
+      port: parseInt(smtpPort),
+      tls: parseInt(smtpPort) === 465,
+      auth: {
+        username: smtpUser,
+        password: smtpPassword,
+      },
     },
-    body: JSON.stringify({
-      from: "CC11 Website <contactos@cc11.pt>",
-      to: ["geral@cc11.pt"],
-      subject: `Novo contacto de ${formData.name}`,
-      html: emailHtml,
-      reply_to: formData.email,
-    }),
   });
 
-  if (!response.ok) {
-    const error = await response.text();
-    throw new Error(`Failed to send email: ${error}`);
-  }
+  await client.send({
+    from: emailFrom,
+    to: emailTo,
+    subject: `Novo contacto de ${formData.name}`,
+    content: emailText,
+    html: emailHtml,
+    replyTo: formData.email,
+  });
+
+  await client.close();
 }
 
 Deno.serve(async (req: Request) => {
@@ -116,10 +138,10 @@ Deno.serve(async (req: Request) => {
     console.log("Contact form submission saved successfully");
 
     try {
-      await sendEmailViaResend(formData);
-      console.log("Email sent successfully");
+      await sendEmailViaSMTP(formData);
+      console.log("Email sent successfully via SMTP");
     } catch (emailError) {
-      console.error("Failed to send email:", emailError);
+      console.error("Failed to send email via SMTP:", emailError);
     }
 
     return new Response(
